@@ -1,6 +1,6 @@
 library(forecast)
 
-Amtrak.data <- read.csv("Amtrak data.csv")
+Amtrak.data <- read.csv("datasets/Amtrak data.csv")
 ridership.ts <- ts(Amtrak.data$Ridership, start = c(1991,1), end = c(2004, 3), freq = 12)
 ridership.lm <- tslm(ridership.ts ~ trend + I(trend^2))
 
