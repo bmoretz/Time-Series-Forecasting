@@ -36,11 +36,10 @@ col.numeric <- c("Quarter", "Sales")
 
 sales.data <- convert_col_types(sales.data, col.numeric, as.numeric)
 
-sales.data <- xts(travel.data, sales.data$Quarter)
-
 rm(source.path)
-rm(travel.wb)
+rm(sales.wb)
 
+par(mfrow = c(1,1))
 sales.ts <- ts(sales.data$Sales, frequency = 12)
 sales.lm <- tslm(sales.ts ~ trend + I(trend ^ 2))
 
