@@ -31,3 +31,21 @@ lines(valid.ts)
 hist(ridership.lm.pred$residuals, ylab = "Frequency", xlab = "Forecast Error", bty = "l", main = "")
 
 accuracy(ridership.lm.pred$mean, valid.ts)
+
+fixed.nValid <- 36
+fixed.nTrain <- length(ridership.ts) - fixed.nValid
+stepsAhead <- 1
+error <- rep(0, fixed.nValid - stepsAhead + 1)
+percent.error <- rep(0, fixed.nValid - stepsAhead + 1)
+
+for (j in fixed.nTrain:(fixed.nTrain + fixed.nValid - stepsAhead)) {
+  train.ts <- window(ridership.ts, start = c(1991, 1), end = c(1991, j))
+  valid.ts <- window(ridership.ts, start = c(1991, j + stepsAhead), end = c(1991, j + stepsAhead))
+  naive.pred <- naive(train.ts, h = stepsAhead)
+  error[j - fixed.nTrain + 1] <- valid.ts - naive.pred$mean[stepsAhead]
+  percent.error[j - fixed.nTrain + 1] <- error[j - fixed.nTrain + 1] / valid.ts
+}
+
+mean(abs(error))
+sqrt(mean(error ^ 2))
+mean(abs(percent.error))
